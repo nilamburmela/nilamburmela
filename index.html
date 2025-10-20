@@ -1,12 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=https://www.google.com">
-    <script>
-      window.location.replace("https://www.google.com");
-    </script>
-  </head>
-  <body></body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Nilambur Mela</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#0f2040;
+      --accent:#ff7a59;
+      --accent-2:#ffd166;
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,122,89,0.10), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    /* subtle floating decorative circles */
+    .decor{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .circle{position:absolute;border-radius:50%;opacity:0.12;filter:blur(24px);}
+    .c1{width:380px;height:380px;background:linear-gradient(135deg,var(--accent),var(--accent-2));left:-80px;top:-60px;}
+    .c2{width:260px;height:260px;background:linear-gradient(135deg,#7bd389,#52c3ff);right:-60px;bottom:-40px;}
+    .c3{width:140px;height:140px;background:linear-gradient(135deg,#ff9ab3,#8b6bff);left:20%;bottom:10%;}
+    @keyframes floaty{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(6deg)}100%{transform:translateY(0) rotate(0)}}
+    .circle{animation:floaty 8s ease-in-out infinite}
+
+    /* main card */
+    .hero{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:20px;
+      padding:28px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:18px;
+      align-items:center;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+    }
+
+    .left{display:flex;flex-direction:column;gap:12px}
+    .title{
+      font-size:clamp(28px,6vw,56px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      margin:0;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:0 6px 30px rgba(0,0,0,0.45);
+    }
+    .subtitle{
+      font-size:clamp(14px,3.5vw,20px);
+      margin:0;
+      color:rgba(255,255,255,0.88);
+      font-weight:500;
+    }
+
+    .meta{
+      display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px
+    }
+    .pill{
+      background:var(--glass);
+      padding:8px 12px;border-radius:999px;font-size:13px;color:#fff;border:1px solid rgba(255,255,255,0.04);
+      display:inline-flex;gap:8px;align-items:center
+    }
+
+    .art{
+      width:120px;height:120px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,0.03),transparent);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    }
+    .art svg{width:86px;height:86px}
+
+    .bottom{display:flex;gap:14px;align-items:center}
+    .notify{padding:12px 18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:12px;border:none;font-weight:700;color:#0b0b0b;cursor:pointer;box-shadow:0 8px 20px rgba(255,122,89,0.18);}
+    .learn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;color:rgba(255,255,255,0.92);font-weight:600;cursor:pointer}
+
+    /* right side: decorative festival image / illustration */
+    .right{
+      display:none;
+      align-items:center;justify-content:center;padding:12px
+    }
+    .illustration{width:320px;height:220px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .lantern{position:absolute;top:-30px;right:-30px;transform:rotate(-15deg);opacity:0.95}
+
+    /* responsive: desktop layout */
+    @media(min-width:880px){
+      .hero{grid-template-columns:1fr 420px;padding:34px}
+      .right{display:flex}
+      .illustration{height:320px;width:420px}
+    }
+
+    /* small tweaks for very small screens */
+    @media(max-width:360px){
+      body{padding:14px}
+      .hero{padding:18px}
+      .art{width:96px;height:96px}
+    }
+
+    /* tiny attention animation for the "Stay tuned" */
+    .pulse{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.03),transparent);animation:pulse 2s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+  </style>
+</head>
+<body>
+  <div class="decor" aria-hidden="true">
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+    <div class="circle c3"></div>
+  </div>
+
+  <main class="hero" role="main" aria-labelledby="main-heading">
+    <section class="left">
+      <div style="display:flex;gap:14px;align-items:center">
+        <div class="art" aria-hidden="true">
+          <!-- simple stylized icon -->
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <defs></defs>
+            <g fill="url(#g)">
+              <circle cx="32" cy="24" r="10" fill="white" opacity="0.14" />
+              <path d="M16 44c6-6 12-8 16-8s10 2 16 8v6H16v-6z" fill="white" opacity="0.06" />
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1 id="main-heading" class="title">Welcome to Nilambur Mela</h1>
+          <p class="subtitle"> <span class="pulse">Stay tuned</span> — exciting events & cultural delights coming soon.</p>
+          <div class="meta">
+            <span class="pill">📍 Nilambur</span>
+            <span class="pill">🎪 Community Festival</span>
+            <span class="pill">✨ Follow for updates</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <button class="notify" onclick="alert('Thanks! You\'ll be notified (demo).')">Notify Me</button>
+        <button class="learn" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Know More</button>
+      </div>
+    </section>
+
+    <aside class="right" aria-hidden="true">
+      <div class="illustration">
+        <!-- Festive lantern illustration (svg) -->
+        <svg viewBox="0 0 200 140" width="380" height="280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg1" x1="0" x2="1">
+              <stop offset="0" stop-color="#ff7a59"/>
+              <stop offset="1" stop-color="#ffd166"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="200" height="140" rx="12" fill="url(#lg1)" opacity="0.08"/>
+          <g transform="translate(40,10)">
+            <ellipse cx="60" cy="90" rx="60" ry="12" opacity="0.06" fill="#000"/>
+            <g transform="translate(0,0)">
+              <g transform="translate(10,6)">
+                <ellipse cx="40" cy="34" rx="28" ry="26" fill="#fff" opacity="0.06"/>
+                <rect x="30" y="10" width="20" height="36" rx="10" fill="#fff" opacity="0.08"/>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </aside>
+  </main>
+
+</body>
 </html>
